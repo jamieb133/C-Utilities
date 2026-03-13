@@ -25,17 +25,18 @@ else ifeq ($(SAN),tsan)
 	LDFLAGS += -fsanitize=thread
 endif
 
-all: dirs $(CUTILS_LIB) $(TEST_EXE)
+all: $(CUTILS_LIB) $(TEST_EXE)
 
-dirs:
+$(BUILD_DIR)/.dir:
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(TEST_BUILD_DIR)
+	@touch $@
 
 $(CUTILS_LIB): $(OBJS)
 	@echo "Linking $<"
 	$(AR) rcs $@ $(OBJS)	
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c dirs
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(BUILD_DIR)/.dir
 	@echo "Compiling $<"
 	$(CC) $(CFLAGS) -Wall -Wextra -c $< -o $@
 
@@ -53,5 +54,5 @@ test: $(TEST_EXE)
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all dirs clean test
+.PHONY: clean test
 
