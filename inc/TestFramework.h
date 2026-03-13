@@ -84,6 +84,7 @@ extern jmp_buf assertJumpBuffer_;
 }
 
 #define CHECK_TRUE(cond) TestCheck(cond, "CHECK_TRUE(" TO_STRING(cond) ")", __FILE__, __LINE__, __testInfo);
+#define CHECK_FALSE(cond) TestCheck(!(cond), "CHECK_FALSE(" TO_STRING(cond) ")", __FILE__, __LINE__, __testInfo);
 
 void TestCheck(bool condition, const char* message, const char* file, i32 line, TestInfo* testResult);
 
