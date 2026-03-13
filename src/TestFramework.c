@@ -4,12 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdarg.h>
-#include <sys/_pthread/_pthread_cond_t.h>
-#include <sys/_pthread/_pthread_mutex_t.h>
-#include <sys/_types/_va_list.h>
-#include <sys/acl.h>
 #include <sys/time.h>
-#include <pthread.h>
 #include <unistd.h>
 
 #include <TestFramework.h>
