@@ -1,6 +1,11 @@
 #include "Logger.h"
 #include <TestFramework.h>
 
+void Death()
+{
+    Assert(false, "dummy test assert");
+}
+
 TEST(DummyTest, Example)
 {
     LogTest("Running example test");
@@ -10,6 +15,7 @@ TEST(DummyTest, Example)
     LogError("Running example test");
 
     CHECK_TRUE(true);
+    CHECK_DEATH(Death());
 }
 
 TEST_SETUP(DummyTest)
