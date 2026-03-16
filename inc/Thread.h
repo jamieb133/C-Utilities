@@ -1,27 +1,34 @@
 #pragma once
 
-#include <stdbool.h>
-#include <pthread.h>
+#ifdef __linux__
+#include "posix/Thread.h"
+#elif __APPLE__
+#include "posix/Thread.h"
+#elif _WIN32
+#include "win32/Thread.h"
+#else
+#error "Thread.h not supported on this system"
+#endif
 
-typedef struct {
-    pthread_t pthread_;
-} Thread;
+/**
+ * Thread
+ */
 
 void Thread_Create(Thread* thread, void* (*funcpt)(void*), void* args);
 void Thread_Join(Thread* thread);
 
-typedef struct {
-    pthread_mutex_t mtx;
-} Mutex;
+/**
+ * Mutex
+ */
 
 void Mutex_Init(Mutex* mutex);
 void Mutex_Deinit(Mutex* mutex);
 void Mutex_Lock(Mutex* mutex);
 void Mutex_Unlock(Mutex* mutex);
 
-typedef struct {
-    pthread_cond_t cv;
-} CondVar;
+/**
+ *  Condition Variable
+ */
 
 void CondVar_Init(CondVar* cv);
 void CondVar_Deinit(CondVar* cv);
