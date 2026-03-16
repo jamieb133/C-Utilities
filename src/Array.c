@@ -1,4 +1,4 @@
-#include <string.h>
+#include <Allocator.h>
 #include <Array.h>
 #include <Logger.h>
 
@@ -29,7 +29,7 @@ void _Array_Get(Array* arr, void* data, u64 index)
     Assert(arr, "arr null");
     Assert(data, "data null");
     Assert(index < arr->capacity, "index out of bounds");
-    memcpy(data, &arr->data[index * arr->chunksize], arr->chunksize);
+    _Memcpy(data, &arr->data[index * arr->chunksize], arr->chunksize);
 }
 
 void _Array_Set(Array* arr, void* data, u64 index)
@@ -37,7 +37,7 @@ void _Array_Set(Array* arr, void* data, u64 index)
     Assert(arr, "arr null");
     Assert(data, "data null");
     Assert(index < arr->capacity, "index out of bounds");
-    memcpy(&arr->data[index * arr->chunksize], data, arr->chunksize);
+    _Memcpy(&arr->data[index * arr->chunksize], data, arr->chunksize);
 }
 
 void* _Array_Data(Array* arr, u64 index)

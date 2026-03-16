@@ -4,11 +4,12 @@
 #include <assert.h>
 #include <sys/time.h>
 #include <time.h>
-#include <string.h>
 #include <tgmath.h>
 #include <execinfo.h>
 
+#include <Allocator.h>
 #include <Logger.h>
+#include <String.h>
 #include <Thread.h>
 
 static const char* levels_[LOG_NUM_LEVELS] = {
@@ -78,16 +79,23 @@ void _LogMessage(LogLevel level, const char* file, i32 line, const char* format,
     }
     tmInfo = localtime(&tv.tv_sec);
     strftime(timeBuf, 26, "%H:%M:%S", tmInfo);
-    snprintf(timeBuf + strlen(timeBuf), sizeof(timeBuf) - strlen(timeBuf), ":%03d", ms);
+    snprintf(timeBuf + Strlen(timeBuf), sizeof(timeBuf) - Strlen(timeBuf), ":%03d", ms);
 
     // Format the output buffer
     char formatBuf[256];
     va_list args;
     va_start(args, format);
+#ifndef __APPLE__
     sprintf(formatBuf, "[%s%-5s%s] [%s] [core:%u] -- %s%s%s (%s:%d)\n", 
             colors_[level], levels_[level], ANSI_COLOR_RESET, 
             timeBuf, Thread_CoreId(), colors_[level], format, 
             ANSI_COLOR_RESET, file, line);
+#else
+    sprintf(formatBuf, "[%s%-5s%s] [%s] -- %s%s%s (%s:%d)\n", 
+            colors_[level], levels_[level], ANSI_COLOR_RESET, 
+            timeBuf, colors_[level], format, 
+            ANSI_COLOR_RESET, file, line);
+#endif
     vprintf(formatBuf, args);
     va_end(args);
 }

@@ -2,14 +2,6 @@
 #include <Logger.h>
 #include <String.h>
 
-static u64 Strlen(const char* str)
-{
-    Assert(str, "str null");
-    const char* ptr;
-    for (ptr = str; *ptr != '\0'; ptr++);
-    return ptr - str;
-}
-
 static void Resize(String* str, u64 size, bool keep)
 {
     char* newdata = Acquire(str->alloc, char, size);
@@ -22,6 +14,34 @@ static void Resize(String* str, u64 size, bool keep)
     Release(str->alloc, str->data);
     str->data = newdata;
     str->capacity = size;
+}
+
+u64 Strlen(const char* str)
+{
+    Assert(str, "str null");
+    const char* ptr;
+    for (ptr = str; *ptr != '\0'; ptr++);
+    return ptr - str;
+}
+
+void Strcpy(char* str, const char* str2)
+{
+    Assert(str, "str null");
+    Assert(str2, "str2 null");
+    Memcpy(char, str, str2, Strlen(str2) + 1);
+    str[Strlen(str2)] = '\0';
+}
+
+bool Strcmp(const char* str, const char* str2)
+{
+    Assert(str, "str null");
+    Assert(str2, "str2 null");
+    u64 strlen1 = Strlen(str);
+    if (strlen1 != Strlen(str2))
+    {
+        return false;
+    }
+    return Memcmp(char, str, str2, strlen1);
 }
 
 void String_Init(String* str, Allocator* alloc, const char* src)

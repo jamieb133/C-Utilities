@@ -1,5 +1,7 @@
+#ifdef __linux__
 #define _GNU_SOURCE
 #include <sched.h>
+#endif
 
 #include <Logger.h>
 #include <Thread.h>
@@ -29,7 +31,11 @@ u64 Thread_Id(void)
 
 u8 Thread_CoreId(void)
 {
+#ifdef __linux__
     return (u8)sched_getcpu();
+#else
+    return 0;
+#endif
 }
 
 /**

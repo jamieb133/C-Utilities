@@ -1,6 +1,6 @@
 #include <TestFramework.h>
 #include <Thread.h>
-#include <string.h>
+#include <String.h>
 
 typedef struct{
     const char* name;
@@ -83,7 +83,7 @@ TEST(ThreadTest, Thread)
 
     // Wait for thread
     CondVar_Wait(&cv_, &mutex_);
-    CHECK_TRUE(strcmp(currentArgs_.name, targs.name) == 0);
+    CHECK_TRUE(Strcmp(currentArgs_.name, targs.name));
 
     // Clean up
     Thread_Join(&t);

@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <setjmp.h>
-#include <string.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stdarg.h>
 #include <sys/time.h>
 #include <unistd.h>
 
+#include <String.h>
 #include <TestFramework.h>
 
 #define ANSI_COLOR_RED     "\x1b[31m"
@@ -15,10 +15,11 @@
 #define ANSI_COLOR_BLUE    "\x1b[34m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
+// TODO: add in functionality for formatted strings in String then removed this
 typedef struct {
     char* data;
     u64 capacity;
-} String;
+} TestString;
 
 TestSuite testSuites_[MAX_SUITES];
 u16 numSuites_ = 0;
@@ -29,21 +30,21 @@ TestInfo* currentTest_;
 jmp_buf testFailedJumpBuffer_;
 jmp_buf assertJumpBuffer_;
 
-static void StringInit(String* string, const char* cstring)
+static void StringInit(TestString* string, const char* cstring)
 {
-    string->capacity = (strlen(cstring) + 1) * 2;
+    string->capacity = (Strlen(cstring) + 1) * 2;
     string->data = malloc(string->capacity);
     assert(string->data);
-    strcpy(string->data, cstring);
+    Strcpy(string->data, cstring);
 }
 
-static void StringDeinit(String* string)
+static void StringDeinit(TestString* string)
 {
     free(string->data);
     string->capacity = 0;
 }
 
-static void StringConcat(String* string, const char* format, ...)
+static void StringConcat(TestString* string, const char* format, ...)
 {
     va_list args;
 
@@ -51,7 +52,7 @@ static void StringConcat(String* string, const char* format, ...)
     size_t formattedLen = vsnprintf(NULL, 0, format, args);
     va_end(args);
 
-    size_t currentLen = strlen(string->data);
+    size_t currentLen = Strlen(string->data);
     size_t totalRequiredSize = currentLen + formattedLen + 1;
 
     if (string->capacity < totalRequiredSize) {
@@ -70,7 +71,7 @@ static void StringConcat(String* string, const char* format, ...)
 
 static void WriteJUnitReport(void)
 {
-    String junit;
+    TestString junit;
     StringInit(&junit, "<!-- TestResults.xml -->\n");
 
     StringConcat(&junit, "<testsuites>\n");
@@ -139,9 +140,9 @@ void TestCheck(bool condition, const char* msg, const char* file, i32 line, Test
 
     testInfo->failureInfo.file = file;
     testInfo->failureInfo.line = line;
-    testInfo->failureInfo.message = malloc(strlen(msg) + 1);
-    memset(testInfo->failureInfo.message, 0, strlen(msg) + 1);
-    strcpy(testInfo->failureInfo.message, msg);
+    testInfo->failureInfo.message = malloc(Strlen(msg) + 1);
+    //memset(testInfo->failureInfo.message, 0, strlen(msg) + 1);
+    Strcpy(testInfo->failureInfo.message, msg);
     longjmp(testFailedJumpBuffer_, 1);
 }
 
@@ -182,7 +183,7 @@ i32 RunAllTests(LogLevel logLevel)
         suite->duration = GetTimeMs() - suiteStartTime;
     }
     
-    String suiteNames;
+    TestString suiteNames;
     StringInit(&suiteNames, "");
     for (u16 i = 0; i < numSuites_; i++) {
         StringConcat(&suiteNames, " -> ");

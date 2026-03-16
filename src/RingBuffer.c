@@ -1,5 +1,3 @@
-#include <string.h>
-
 #include <Allocator.h>
 #include <Logger.h>
 #include <RingBuffer.h>
@@ -49,7 +47,7 @@ bool _RingBuffer_Push(RingBuffer* rb, void* chunk)
     void* headptr = (u8*)rb->data + index;
 
     // Copy value into current head
-    memcpy(headptr, chunk, rb->chunksize);
+    _Memcpy(headptr, chunk, rb->chunksize);
 
     // Move the head forward
     rb->head = (rb->head + 1) % rb->capacity;
@@ -74,7 +72,7 @@ bool _RingBuffer_Pop(RingBuffer* rb, void* chunk)
     void* tailptr = (u8*)rb->data + index;
 
     // Copy value from current tail
-    memcpy(chunk, tailptr, rb->chunksize);
+    _Memcpy(chunk, tailptr, rb->chunksize);
 
     // Move the tail forward
     rb->tail = (rb->tail + 1) % rb->capacity;

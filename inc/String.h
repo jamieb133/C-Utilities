@@ -11,6 +11,10 @@ typedef struct {
     Allocator* alloc;
 } String;
 
+u64 Strlen(const char* str);
+void Strcpy(char* str, const char* str2);
+bool Strcmp(const char* str, const char* str2);
+
 void String_Init(String* str, Allocator* alloc, const char* initstr);
 void String_Deinit(String* str);
 void String_Copy(String* dst, const String* src);
