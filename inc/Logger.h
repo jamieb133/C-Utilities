@@ -74,3 +74,6 @@ void _LogMessage(LogLevel level, const char* file, i32 line, const char* format,
 
 void RegisterAssertHandler(void (*handler)(char const*, const char*, i32));
 void SetLogLevel(LogLevel level);
+
+void DumpBacktrace(void);
+

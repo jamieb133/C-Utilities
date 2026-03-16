@@ -12,6 +12,7 @@ void _RingBuffer_Init(RingBuffer* rb, Allocator* alloc, u64 chunksize, u64 capac
 void _RingBuffer_Deinit(RingBuffer* rb, Allocator* alloc);
 bool _RingBuffer_Push(RingBuffer* rb, void* chunk);
 bool _RingBuffer_Pop(RingBuffer* rb, void* chunk);
+bool _RingBuffer_Empty(RingBuffer* rb);
 
 #define RingBuffer_Init(T, rb, alloc, cap) _RingBuffer_Init(rb, alloc, sizeof(T), cap)
 #define RingBuffer_Deinit(rb, alloc) _RingBuffer_Deinit(rb, alloc)

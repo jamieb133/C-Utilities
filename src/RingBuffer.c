@@ -6,7 +6,6 @@
 
 void _RingBuffer_Init(RingBuffer* rb, Allocator* alloc, u64 chunksize, u64 capacity)
 {
-    LogTrace("RingBuffer_Init");
     Assert(rb, "Ringbuffer null");
     Assert(alloc, "Allocator null");
     Assert(chunksize > 0, "Chunksize is 0");
@@ -23,7 +22,6 @@ void _RingBuffer_Init(RingBuffer* rb, Allocator* alloc, u64 chunksize, u64 capac
 
 void _RingBuffer_Deinit(RingBuffer* rb, Allocator* alloc)
 {
-    LogTrace("RingBuffer_Deinit");
     Assert(rb, "Ringbuffer null");
     Assert(alloc, "Allocator null");
     Assert(rb->data, "Ringbuffer data null");
@@ -36,7 +34,6 @@ void _RingBuffer_Deinit(RingBuffer* rb, Allocator* alloc)
 
 bool _RingBuffer_Push(RingBuffer* rb, void* chunk)
 {
-    LogTrace("RingBuffer_Push");
     Assert(rb, "Ringbuffer null");
     Assert(chunk, "Chunk null");
     Assert(rb->data, "Data null");
@@ -62,7 +59,6 @@ bool _RingBuffer_Push(RingBuffer* rb, void* chunk)
 
 bool _RingBuffer_Pop(RingBuffer* rb, void* chunk)
 {
-    LogTrace("RingBuffer_Pop");
     Assert(rb, "Ringbuffer null");
     Assert(chunk, "Chunk null");
     Assert(rb->data, "Data null");
@@ -84,4 +80,10 @@ bool _RingBuffer_Pop(RingBuffer* rb, void* chunk)
     rb->tail = (rb->tail + 1) % rb->capacity;
 
     return true;
+}
+
+bool _RingBuffer_Empty(RingBuffer *rb)
+{
+    Assert(rb, "Ringbuffer null");
+    return (rb->head == rb->tail);
 }

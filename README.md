@@ -6,10 +6,10 @@ Done:
 * Test Framework
 * Circular Buffers
 * Threads, mutexes, condition variables
+* Thread Pool
+* Strings
 
 Todo:
 * Allocators
-* String
-* Thread Pool
 * File logging
 

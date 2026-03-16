@@ -15,7 +15,7 @@ TEST_SRCS = $(wildcard $(TEST_DIR)/*.c)
 TEST_OBJS = $(patsubst $(TEST_DIR)/%.c,$(TEST_BUILD_DIR)/%.o,$(TEST_SRCS))
 
 CFLAGS = -g -Iinc -O0
-LDFLAGS = -lm -pthread
+LDFLAGS = -lm -pthread -rdynamic
 
 ifeq ($(SAN),asan)
 	CFLAGS += -fsanitize=address

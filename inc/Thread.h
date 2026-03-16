@@ -10,12 +10,17 @@
 #error "Thread.h not supported on this system"
 #endif
 
+#include <CustomTypes.h>
+
 /**
  * Thread
  */
 
 void Thread_Create(Thread* thread, void* (*funcpt)(void*), void* args);
 void Thread_Join(Thread* thread);
+u64 Thread_Id(void);
+u64 Thread_Id(void);
+u8 Thread_CoreId(void);
 
 /**
  * Mutex

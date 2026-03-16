@@ -6,8 +6,10 @@
 #include <time.h>
 #include <string.h>
 #include <tgmath.h>
+#include <execinfo.h>
 
 #include <Logger.h>
+#include <Thread.h>
 
 static const char* levels_[LOG_NUM_LEVELS] = {
     "TEST",
@@ -82,9 +84,10 @@ void _LogMessage(LogLevel level, const char* file, i32 line, const char* format,
     char formatBuf[256];
     va_list args;
     va_start(args, format);
-    sprintf(formatBuf, "[%s%-5s%s] [%s] -- %s%s%s (%s:%d)\n", 
+    sprintf(formatBuf, "[%s%-5s%s] [%s] [core:%u] -- %s%s%s (%s:%d)\n", 
             colors_[level], levels_[level], ANSI_COLOR_RESET, 
-            timeBuf, colors_[level], format, ANSI_COLOR_RESET, file, line);
+            timeBuf, Thread_CoreId(), colors_[level], format, 
+            ANSI_COLOR_RESET, file, line);
     vprintf(formatBuf, args);
     va_end(args);
 }
@@ -121,4 +124,16 @@ void _Assert(bool condition, const char* condString, const char* file, i32 line,
             DefaultAssertHandler(outputBuf, file, line);
         }
     }
+}
+
+void DumpBacktrace(void)
+{
+    void* addrlist[32];
+    int addrlen = backtrace(addrlist, 32);
+    char** symbollist = backtrace_symbols(addrlist, addrlen);
+    for (int i = 0; i < addrlen; i++)
+    {
+        printf("\t[%d] %s\n", i, symbollist[i]);
+    }
+    free(symbollist);
 }

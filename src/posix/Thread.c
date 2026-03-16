@@ -1,3 +1,6 @@
+#define _GNU_SOURCE
+#include <sched.h>
+
 #include <Logger.h>
 #include <Thread.h>
 #include <pthread.h>
@@ -17,6 +20,16 @@ void Thread_Join(Thread* thread)
 {
     Assert(thread, "thread null");
     pthread_join(thread->pthread_, NULL);
+}
+
+u64 Thread_Id(void)
+{
+    return (u64)pthread_self();
+}
+
+u8 Thread_CoreId(void)
+{
+    return (u8)sched_getcpu();
 }
 
 /**

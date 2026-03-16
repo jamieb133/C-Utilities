@@ -120,6 +120,7 @@ static void WriteJUnitReport(void)
 static void AssertHandler(const char* message, const char* file, i32 line)
 {
     LogTest("Assert");
+    //DumpBacktrace();
     if (currentTest_->expectAssert) {
         longjmp(assertJumpBuffer_, 1);
     }
