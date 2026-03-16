@@ -5,6 +5,7 @@ Done:
 * Basic Logger
 * Test Framework
 * Circular Buffers
+* Threads, mutexes, condition variables
 
 Todo:
 * Allocators
